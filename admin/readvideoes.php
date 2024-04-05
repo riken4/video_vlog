@@ -6,6 +6,7 @@
     <style>
         body {
             font-family: "Lato", sans-serif;
+            
             margin: 0;
         }
 
@@ -58,8 +59,8 @@
 
             flex-wrap: wrap;
             justify-content: center;
-            padding-top: 60px;
-            height: 64px;
+            padding-top: 5px;
+            height: 70px;
             /* Adjusted padding for space taken by fixed navbar */
         }
 
@@ -85,7 +86,7 @@
         }
 
         .comment-box {
-            border: 2px solid black;
+            border: 1px solid black;
             padding: 5px;
             margin-bottom: 10px;
         }
@@ -101,10 +102,11 @@
 
 
         .v_title {
+            border: 1px solid black;
 
-            margin-bottom: 0px;
+           
             /* Adjusted margin */
-            text-align: center;
+            padding-left: 5px;
             /* Centering video titles */
         }
 
@@ -120,10 +122,9 @@
 
 
         .logout {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
             padding: 10px;
+      margin-top: 500px;
+
         }
     </style>
 </head>
@@ -151,12 +152,13 @@
         <<div class="row">
             <?php
             include ("../config.php");
-            $sql = "SELECT * FROM videos";
+            $sql = "SELECT * FROM videos where status = 1";
             $query = mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_array($query)) {
                 $location = $row['location'];
                 $video_id = $row['video_id'];
                 $name = $row['name'];
+          
                 ?>
                 <div class="video-comment-container">
                     <div class="video-container">
@@ -169,18 +171,19 @@
                     </div>
                     <div class="comment-container">
                         <div class="v_title">
-                            <h3><?php echo $row['video_title']; ?></h3><br>
+                            <h3><?php echo $row['video_title']; ?></h3>
                             <?php echo $row['video_description']; ?>
                         </div>
                         <?php
                         include ("../config.php");
+
                         $video_id = $row['video_id'];
                         $comment = mysqli_query($conn, "SELECT * FROM comment where video_id='$video_id' order by video_id DESC");
                         while ($comment_row = mysqli_fetch_array($comment)) {
                             ?>
                             <div class="comment-box">
                                 <div class="comment">
-
+                            <b> <?php echo $comment_row['username']; echo ":" ?></b>
                                     <?php echo $comment_row['comment']; ?>
                                 </div>
                             </div>

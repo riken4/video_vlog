@@ -6,17 +6,17 @@
   <title>Video upload</title>
   <?php
   include ("../config.php");
-  if (isset ($_POST['but_upload'])) {
+  if (isset($_POST['but_upload'])) {
     $maxsize = 262144000;//25mb
     $video_title = $_POST['video_title'];
     $v_des = $_POST['video_description'];
-    $comment = $_POST['comment'];
+    $status = $_POST['status'];
     $name = $_FILES['file']['name'];
     $target_dir = "../videos/";
     $target_file = $target_dir . $_FILES["file"]["name"];
 
 
- 
+
     //select file type
     $videoFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -33,7 +33,7 @@
         //supload
         if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
           //Insert record
-          $query = "INSERT INTO videos(video_title,video_description,name,location,comment) VALUES('" . $video_title . "','" . $v_des . "','" . $name . "','" . $target_file . "','" . $comment . "')";
+          $query = "INSERT INTO videos(video_title,video_description,name,location,status) VALUES('" . $video_title . "','" . $v_des . "','" . $name . "','" . $target_file . "','" . $status . "')";
           mysqli_query($conn, $query);
           echo "<center> upload successfully. </center>";
         }
@@ -63,7 +63,7 @@
 
 
 
-  
+
 
 
 
@@ -147,7 +147,7 @@
 
     }
 
-   
+
 
     .content {
 
@@ -183,7 +183,7 @@
     <table border>
       <!-- <label for="">u_name: <?php
       session_start();
-      if (isset ($_SESSION["username"])) {
+      if (isset($_SESSION["username"])) {
         echo $_SESSION["username"];
       }
       ?></label> -->
@@ -203,16 +203,23 @@
         </td>
       </tr>
       <tr>
-        <td colspan="2">     
-    <input style="" type='file' name='file'>
-</td>
+        <td colspan="2">
+          <input style="" type='file' name='file'>
+        </td>
       </tr>
       <tr>
         <th>status</th>
-        <th> <input type="radio" name="fav_language" id="" value="Active"> <label for="">Active</label>
-          <input type="radio" name="fav_language" id="" value="Inactive"> <label for="">Inactive</label>
+     <td><select name="status" id="">
+      <option value="1">
+        Active
+      </option>
+      <option value="0">
+        Inactive
+      </option>
+     </select></td>
+    
       </tr>
-      </th>
+      
 
       </tr>
       <tr>

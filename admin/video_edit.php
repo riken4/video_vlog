@@ -1,71 +1,70 @@
 <style>
-<style>
-body {
+    <style>body {
 
-    font-family: "Lato", sans-serif;
-}
+        font-family: "Lato", sans-serif;
+    }
 
-.sidenav {
-    font-family: "Lato", sans-serif;
-    height: 100%;
-    width: 150px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
+    .sidenav {
+        font-family: "Lato", sans-serif;
+        height: 100%;
+        width: 150px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        padding-top: 20px;
 
 
-}
+    }
 
-.sidenav a {
+    .sidenav a {
 
-    text-decoration: none;
-    font-size: 25px;
-    color: #fff;
-    display: block;
-    background-color: #424242;
+        text-decoration: none;
+        font-size: 25px;
+        color: #fff;
+        display: block;
+        background-color: #424242;
 
-}
+    }
 
-.sidenav {
-    text-align: center;
-    padding: 1px 1px 1px 1px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #fff;
-    display: block;
-}
+    .sidenav {
+        text-align: center;
+        padding: 1px 1px 1px 1px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #fff;
+        display: block;
+    }
 
-.sidenav a:hover {
-    color: #f1f1f1;
+    .sidenav a:hover {
+        color: #f1f1f1;
 
-}
+    }
 
-.das {
-    text-align: center;
-    padding: 8px;
-    font-size: 16px;
+    .das {
+        text-align: center;
+        padding: 8px;
+        font-size: 16px;
 
-    background-color: #424242;
+        background-color: #424242;
 
-}
+    }
 
-.upload {
-    text-align: center;
-    padding: 8px;
-    font-size: 16px;
+    .upload {
+        text-align: center;
+        padding: 8px;
+        font-size: 16px;
 
-    background-color: #424242;
-}
-  .logout{
-    padding:10px;
-    margin-top: 400px;
-    
-  }
+        background-color: #424242;
+    }
 
+    .logout {
+        padding: 10px;
+        margin-top: 400px;
+
+    }
 </style>
 
 <header>
@@ -101,48 +100,54 @@ body {
                     </div>
                 </tr>
                 <?php
-          include '../config.php';
+                include '../config.php';
 
-          $sql = "SELECT * FROM videos";
-          $result = mysqli_query($conn, $sql);
-          $num = mysqli_num_rows($result);
-          $sno=1;
-          if ($num > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-             ?>
-                <tr style="height:100px">
-                    <td><?php echo $sno++ ?>
-                    </td>
-                    <td><?php echo $row['video_title']; ?></td>
-                    <td><?php echo $row['video_description']; ?></td>
+                $sql = "SELECT * FROM videos";
+                $result = mysqli_query($conn, $sql);
+                $num = mysqli_num_rows($result);
+                $sno = 1;
+                if ($num > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                        <tr style="height:100px">
+                            <td>
+                                <?php echo $sno++ ?>
+                            </td>
+                            <td>
+                                <?php echo $row['video_title']; ?>
+                            </td>
+                            <td>
+                                <?php echo $row['video_description']; ?>
+                            </td>
 
-                    <td><video style="width:10%" height="10%">
-                            <source class="vd" src="<?php echo $row['location'] ?>" type="video/mp4">
-                        </video>
-
-
-                    <td>
-                        <a href="./delete_video.php?video_id=<?php echo $row['video_id'] ?>">Delete</a>
-                    </td>
-                    <td><a href="./edit_video.php?video_id=<?php echo $row['video_id'] ?>">edit</a></td>
-                    <td><?php
-//   if($num['status']==1){
-//     echo '<p><a href="./status.php?video_id='.$num['video_id'].'$status=0">Active</a>"<p>';
-//   }else{
-//     echo '<p><a href="./status.php?video_id='.$num['video_id'].'$status=1">Inactive</a>"<p>';
-
-//   }
-  ?></td>
-                </tr>
+                            <td><video style="width:10%" height="10%">
+                                    <source class="vd" src="<?php echo $row['location'] ?>" type="video/mp4">
+                                </video>
 
 
-                <?php }
-          }
-          ?>
+                            <td>
+                                <a href="./delete_video.php?video_id=<?php echo $row['video_id'] ?>">Delete</a>
+                            </td>
+                            <td><a href="./edit_video.php?video_id=<?php echo $row['video_id'] ?>">edit</a></td>
+                            <td>
+                                <?php
+                                if ($row['status'] == 1) {
+                                    echo 'Avtive';
+                                } else {
+                                    echo 'Inactive';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+
+
+                    <?php }
+                }
+                ?>
             </table>
 
         </div>
-         
+        
     </div>
 
 </body>
