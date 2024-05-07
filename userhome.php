@@ -94,6 +94,6 @@ if(!isset($_SESSION["username"]))
 <h1>THIS IS USER HOME PAGE</h1><?php echo $_SESSION["username"] ?>
 <a href="readvideoes.php">video</a>
 <a href="logout.php">Logout</a>
-
+m
 </body>
 </html>

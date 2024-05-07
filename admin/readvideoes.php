@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: "Lato", sans-serif;
-            
+
             margin: 0;
         }
 
@@ -61,7 +61,6 @@
             justify-content: center;
             padding-top: 5px;
             height: 70px;
-            /* Adjusted padding for space taken by fixed navbar */
         }
 
         .video-comment-container {
@@ -72,47 +71,53 @@
 
         .video-container {
             width: 30%;
-            /* Adjusted width for video container */
-   
-            margin-left: 500px;
-            /* Adjusted margin between video and comment container */
-        }
 
+            margin-left: 500px;
+        }
+        
+        .vd {
+            width: 100%;
+            max-height: 700px;
+        }
+.comment_all table{
+    max-height: 100px; /* Adjust this height as needed */
+    overflow-y: auto;
+    border: 1px solid #ddd; /* Add border for better separation */
+    border-radius: 5px;
+    padding: 10px;
+}
         .comment-container {
             width: 30%;
-            /* Adjusted width for comment container */
             display: flex;
             flex-direction: column;
+           
         }
 
         .comment-box {
             border: 1px solid black;
             padding: 5px;
             margin-bottom: 10px;
+           
+ 
+        }
+        .comment-box img{
+            max-height: 20px;
+            max-width: 20px;
         }
 
 
-        .vd {
-            width: 100%;
-            /* Video width adjusted to fit its container */
-            max-height: 700px;
-            /* Set maximum height for the videos */
-        }
 
 
 
         .v_title {
             border: 1px solid black;
 
-           
-            /* Adjusted margin */
+
             padding-left: 5px;
-            /* Centering video titles */
         }
 
         .comment-text {
             width: calc(100% - 20px);
-            /* Making comment input full width */
             margin-bottom: 10px;
         }
 
@@ -123,7 +128,7 @@
 
         .logout {
             padding: 10px;
-      margin-top: 500px;
+            margin-top: 400px;
 
         }
     </style>
@@ -134,31 +139,38 @@
     <section class="header">
         <nav>
             <div class="sidenav">
-                <a href="user_dashboard.php">Home</a>
+                <a href="../user_dashboard.php">Home</a>
                 <div class="profile">
                     <div class="user">
-                        <img src="../profile.png" alt=width="40" height="40" srcset=""><br>
                         <?php
-                        session_start();
-
-                        echo $_SESSION["username"];
-
+                             include ("../config.php");
+                             session_start();
+                        $sql = "SELECT * FROM tbl_user where username = '" . $_SESSION["username"] . "'";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_fetch_array($result);
+                        echo "<img src='../profile_img/" . $row['profile_picture'] . "'>";
+                        echo '<br>';
+                   echo $row['UserName'];
                         ?>
+                    
                     </div>
+
+                    <a href="pass_change.php">change</a>
+        <a href="manageprofile.php?username=<?php echo $_SESSION["username"];?>">profile</a>
                 </div>
                 <a class="logout" href="../logout.php">Logout</a>
             </div>
         </nav>
         <<div class="row">
             <?php
-            include ("../config.php");
+       
             $sql = "SELECT * FROM videos where status = 1";
             $query = mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_array($query)) {
                 $location = $row['location'];
                 $video_id = $row['video_id'];
                 $name = $row['name'];
-          
+
                 ?>
                 <div class="video-comment-container">
                     <div class="video-container">
@@ -166,7 +178,9 @@
                             <source src="<?php echo $location ?>" type="video/mp4">
                             <source src="<?php echo $row['name'] ?>">
                         </video>
-                       
+
+
+
 
                     </div>
                     <div class="comment-container">
@@ -174,19 +188,40 @@
                             <h3><?php echo $row['video_title']; ?></h3>
                             <?php echo $row['video_description']; ?>
                         </div>
+                        <div class="like" >
+<!-- like -->
+
+                            <div class="">
+                                <div class="">
+                                    <span class="">like</span>
+                                    <span class="">0</span>
+                                </div>
+                                <div class="video-rating">
+                                    <span class="">dislike</span>
+                                    <span class="">0</span>
+                                </div>
+                                
+                            </div>
+                        </div>
                         <?php
                         include ("../config.php");
 
                         $video_id = $row['video_id'];
-                        $comment = mysqli_query($conn, "SELECT * FROM comment where video_id='$video_id' order by video_id DESC");
+                        $comment = mysqli_query($conn, "SELECT * FROM comment join tbl_user on comment.username=tbl_user.UserName where video_id='$video_id' order by video_id DESC;");
                         while ($comment_row = mysqli_fetch_array($comment)) {
                             ?>
+                            <div class="comment_all">
                             <div class="comment-box">
                                 <div class="comment">
-                            <b> <?php echo $comment_row['username']; echo ":" ?></b>
+                                <?php
+     
+            
+            echo "<img src='../profile_img/" . $comment_row['profile_picture'] . "'>"; ?>
+                             
+                                    <b> <?php echo $comment_row['username']; echo ":" ?></b>
                                     <?php echo $comment_row['comment']; ?>
                                 </div>
-                            </div>
+                            </div></div>
                         <?php } ?>
                         <form method="POST" action="./comment.php">
                             <div class="c_title">
@@ -197,6 +232,7 @@
                                 <input type="submit" name="video_comment" value="Enter" class="btn-comment">
                             </div>
                         </form>
+                   
                     </div>
                 </div>
             <?php } ?>

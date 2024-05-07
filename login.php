@@ -19,7 +19,9 @@ if(isset($_POST['login'])) {
             header("Location: http://localhost/project_2/admin/admin_dashboard.php");
             exit();
         } else {
-            echo "<center> Invalid admin credentials </center>";
+            // echo "<center> invalid username or password </center>";
+            echo "<script>alert('invalid username or password'); window.location.href = 'login.php';</script>";
+            exit();
         }
         
     } else if ($inputUsertype == 2){
@@ -31,7 +33,8 @@ if(isset($_POST['login'])) {
             header("Location: user_dashboard.php"); 
             exit(); 
         } else {
-            echo "</center> Invalid student credentials </center>";
+          echo "<script>alert('invalid username or password'); window.location.href = 'login.php';</script>";
+          exit();
         }
     } 
 }

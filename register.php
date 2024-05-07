@@ -98,67 +98,79 @@ button:hover {
 </head>
 <body>
     <div class="reg">
-            <h1>Register</h1>
-            <form method="POST">
+        <h1>Register</h1>
+        <form method="POST" enctype="multipart/form-data">
             <div class="box">
-            <label for="fullname">Full Name</label><br>
-            <input type="text" name="fullname" placeholder=" " class="input-responsive" required>
+            <label for="fullname">Full Name:</label>
+        <input type="text" id="fullname" name="fullname" required><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
 
-            <label for="username">UserName</label>
-            <input type="text" name="UserName" placeholder=" " class="input-responsive" required>
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required><br>
 
-        
-            <label for="">Phone Number</label>
-            <input type="tel" name="contact"  placeholder=" " class="input-responsive" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
 
-            <label for="">Email</label>
-            <input type="email" name="email" placeholder=" " class="input-responsive" required>
+        <label for="address">Address:</label>
+        <input id="address" name="address" required><br>
 
-           <label for="">Address</label>
-            <input type="text" name="address" placeholder=" " class="input-responsive" required>
 
-            <label for="password">password</label>
-        <input type="password" name="password" id="password" required value=""><br>
-    
-            <select name="gender" class="input-responsive" required>
-                <option value="" selected disabled>Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-            <div class="loginb">
-            <input type="submit" name="submit" value="Register" class="btn btn-primary"></div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+                <label for="profile_picture">Profile Picture</label>
+                <input type="file" name="profile_picture" class="input-responsive" required>
+                <div class="loginb">
+                    <input type="submit" name="submit" value="Register" class="btn btn-primary">
+                </div>
             </div>
-            </div>
-            </form>
+        </form>
 
-<?php
-include "config.php";
+        <?php
+        include "config.php";
 
-if(isset($_POST['submit'])){
-    $fullname = $_POST['fullname'];
-    $UserName = $_POST['UserName'];
-    $Number = $_POST['contact'];
-    $Email = $_POST['email'];
-    $Address = $_POST['address'];
-    $Gender = $_POST['gender'];
-    $Password = $_POST['password'];
-    $hash=sha1($Password);
+        if(isset($_POST['submit'])) {
+            $fullname = $_POST['fullname'];
+            $UserName = $_POST['username'];
+            $Number = $_POST['phone'];
+            $Email = $_POST['email'];
+            $Address = $_POST['address'];
+            $Password = $_POST['password'];
+            $hash = sha1($Password);
 
-    $query = "INSERT INTO tbl_user (UserName, fullname, Number, Email, Address, Gender, Password) VALUES ('$UserName','$fullname', '$Number', '$Email', '$Address', '$Gender', '$hash')";
-    $result = mysqli_query($conn,$query);
+            // File upload logic
+            $profile_picture = $_FILES['profile_picture'];
+            $file_name = $profile_picture['name'];
+            $file_tmp = $profile_picture['tmp_name'];
+            $file_size = $profile_picture['size'];
+            $file_error = $profile_picture['error'];
 
-    if ($result) {
-         echo "<center> User created successfully </center>"; 
-        header("Location:login.php"); // Redirect to login page
-        exit();
-    } else {
-        echo "User not inserted";
-    }
-    
-}
-?>
-        </div>
+            // Move uploaded file to desired location
+            $upload_dir = "./profile_img/";
+            $file_destination = $upload_dir . $file_name;
+
+            if ($file_error === 0) {
+                if (move_uploaded_file($file_tmp, $file_destination)) {
+                    // File uploaded successfully, update database with file location
+                    $query = "INSERT INTO tbl_user (UserName, fullname, Number, Email, Address, Gender, profile_picture, Password) VALUES ('$UserName','$fullname', '$Number', '$Email', '$Address', '$Gender','$file_destination', '$hash')";
+                    $result = mysqli_query($conn, $query);
+
+                    if ($result) {
+                        echo "<center> User created successfully </center>";
+                        header("Location: login.php");
+                        exit();
+                    } else {
+                        echo "User not inserted";
+                    }
+                } else {
+                    echo "Error uploading file";
+                }
+            } else {
+                echo "Error uploading file: " . $file_error;
+            }
+        }
+        ?>
     </div>
 </body>
 </html>

@@ -35,7 +35,8 @@
           //Insert record
           $query = "INSERT INTO videos(video_title,video_description,name,location,status) VALUES('" . $video_title . "','" . $v_des . "','" . $name . "','" . $target_file . "','" . $status . "')";
           mysqli_query($conn, $query);
-          echo "<center> upload successfully. </center>";
+          // echo "<center> upload successfully. </center>";
+          echo "<script>alert('upload successfully'); window.location.href = 'upload.php';</script>";
         }
       }
 
@@ -46,119 +47,29 @@
   ?>
 
 </head>
+<link rel="stylesheet" href="nav_bar.css">
+
 <style>
   body {
     font-family: "Lato", sans-serif;
-    background-color: #f0f0f0;
+    background-color: ;
   }
 
   main {
     margin: 20px;
   }
 
-  .h1 {
-    text-align: ;
-  }
+  
+  .content {
 
-
-
-
-
-
-
-
-  .sidenav {
-    height: 100%;
-    width: 150px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 200px;
+    height: 100px;
+    border: 3px solid #73AD21;
 
   }
-
-  .sidenav a {
-
-    text-decoration: none;
-    font-size: 25px;
-    color: #fff;
-    display: block;
-    background-color: #424242;
-
-  }
-
-  .sidenav {
-    text-align: center;
-    padding: 1px 1px 1px 1px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #fff;
-    display: block;
-  }
-
-  .sidenav a:hover {
-    color: #f1f1f1;
-
-  }
-
-  .das {
-    text-align: center;
-    padding: 8px;
-    font-size: 16px;
-
-    background-color: #424242;
-
-  }
-
-  .upload {
-    text-align: center;
-    padding: 8px;
-    font-size: 16px;
-
-    background-color: #424242;
-
-
-
-
-
-    @media screen and (max-height: 450px) {
-      .sidenav {
-        padding-top: 15px;
-      }
-
-      .sidenav a {
-        font-size: 18px;
-      }
-    }
-
-    .login {
-      padding: 10px;
-      margin-top: 480px;
-
-    }
-
-    .logout {
-      padding: 10px;
-      margin-top: 400px;
-
-    }
-
-
-
-    .content {
-
-      position: absolute;
-      top: 50px;
-      right: 50px;
-      width: 200px;
-      height: 100px;
-      border: 3px solid #73AD21;
-
-    }
 </style>
 
 <body>
@@ -169,13 +80,13 @@
 
       <a class="upload" href="./upload.php">Add Video</a></li><br>
       <a href="./video_edit.php">Manage Video</a><br>
-
+      <a href="edit_comment.php">Manage Comment</a><br>
 
       <a class="logout" href="http://localhost/project_2/login.php">Logout </a></li>
 
     </div>
-    <div class="content" style="margin-left:45%;padding:1px 16px;height:100px;">
-      <h1>Video upload</h1>
+    <h1 style="margin-left:45%;"> video upload</h1>
+  
 
       <form method="post" action="" enctype="multipart/form-data">
   </main>
@@ -209,17 +120,17 @@
       </tr>
       <tr>
         <th>status</th>
-     <td><select name="status" id="">
-      <option value="1">
-        Active
-      </option>
-      <option value="0">
-        Inactive
-      </option>
-     </select></td>
-    
+        <td><select name="status" id="">
+            <option value="1">
+              Active
+            </option>
+            <option value="0">
+              Inactive
+            </option>
+          </select></td>
+
       </tr>
-      
+
 
       </tr>
       <tr>
