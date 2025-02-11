@@ -1,3 +1,13 @@
+<html>
+    <title>Manage Video</title>
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("location: ../login.php");
+    exit;
+}
+?>
+
 <link rel="stylesheet" href="nav_bar.css">
 
 <style>
@@ -22,9 +32,7 @@
 
 </style>
 
-<header>
 
-</header>
 
 <body style="margin-left:25%;padding:1px 16px;height:1000px;">
     <div class="sidenav">
@@ -32,7 +40,9 @@
         <a class="upload" href="upload.php">Add Video</a></li><br>
         <a href="video_edit.php">Manage Video</a><br>
         <a href="edit_comment.php">Manage Comment</a><br>
-        <a class="logout" href="http://localhost/project_2/login.php">logout </a></li>
+        <a href="display_like.php">Likes</a><br>
+
+        <a class="logout" href="../logout.php">logout </a></li>
     </div>
 
 
@@ -60,7 +70,7 @@
                 <?php
                 include '../config.php';
 
-                $sql = "SELECT * FROM videos";
+                $sql = "SELECT * FROM videos ORDER BY video_id DESC";
                 $result = mysqli_query($conn, $sql);
                 $num = mysqli_num_rows($result);
                 $sno = 1;
@@ -68,8 +78,9 @@
                     while ($row = mysqli_fetch_assoc($result)) {
                         ?>
                         <tr style="height:100px">
-                            <td>
-                                <?php echo $sno++ ?>
+                            <td>        
+                            <?php echo $row['video_id']; ?>
+                                <!-- <?php echo $sno++ ?> -->
                             </td>
                             <td>
                                 <?php echo $row['video_title']; ?>
@@ -85,7 +96,7 @@
                             <td>
                                 <a href="./delete_video.php?video_id=<?php echo $row['video_id'] ?>">Delete</a>
                             </td>
-                            <td><a href="./edit_video.php?video_id=<?php echo $row['video_id'] ?>">edit</a></td>
+                            <td><a href="./edit_video.php?video_id=<?php echo $row['video_id'] ?>">Edit</a></td>
                             <td>
                           
                         
@@ -111,3 +122,4 @@
     </div>
 
 </body>
+</html>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,6 +97,7 @@ button:hover {
   background-color: #0056b3;
 </style>
 </head>
+<title>Register</title>
 <body>
     <div class="reg">
         <h1>Register</h1>
@@ -107,7 +109,7 @@ button:hover {
         <input type="text" id="username" name="username" required><br>
 
         <label for="phone">Phone:</label>
-        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required><br>
+        <input type="tel" id="phone" name="phone" pattern="98[0-9]{8}" title="Phone number must start with 98 and 10 digits long"required><br>
 
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br>
@@ -139,20 +141,23 @@ button:hover {
             $Password = $_POST['password'];
             $hash = sha1($Password);
 
-            // File upload logic
             $profile_picture = $_FILES['profile_picture'];
             $file_name = $profile_picture['name'];
             $file_tmp = $profile_picture['tmp_name'];
             $file_size = $profile_picture['size'];
             $file_error = $profile_picture['error'];
 
-            // Move uploaded file to desired location
-            $upload_dir = "./profile_img/";
-            $file_destination = $upload_dir . $file_name;
+            $file_destination = $file_name;
 
-            if ($file_error === 0) {
+            $checkuser = "SELECT  * from tbl_user where username = '$UserName' || email = '$Email'";
+            $result = mysqli_query($conn, $checkuser);
+            $count = mysqli_num_rows($result);
+            if($count>0){
+              echo "<script>alert('username or email already exists')</script>";
+            }
+            else{
+              if ($file_error === 0) {
                 if (move_uploaded_file($file_tmp, $file_destination)) {
-                    // File uploaded successfully, update database with file location
                     $query = "INSERT INTO tbl_user (UserName, fullname, Number, Email, Address, Gender, profile_picture, Password) VALUES ('$UserName','$fullname', '$Number', '$Email', '$Address', '$Gender','$file_destination', '$hash')";
                     $result = mysqli_query($conn, $query);
 
@@ -169,6 +174,8 @@ button:hover {
             } else {
                 echo "Error uploading file: " . $file_error;
             }
+            }
+            
         }
         ?>
     </div>

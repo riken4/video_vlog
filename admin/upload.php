@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("location: ../login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,26 +24,19 @@
 
 
 
-    //select file type
     $videoFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    //valid file extensions
     $extensions_arr = array("mp4", "ogg", "avi", "3gp", "mov", "mpeg", "mp4v", ".JPG");
 
-    //check extesnsion
     if (in_array($videoFileType, $extensions_arr)) {
 
-      //check file size
       if (($_FILES['file']['size'] >= $maxsize) || ($_FILES["file"]['size'] == 0)) {
         echo "file too large. File must be less than 25MB.";
       } else {
-        //supload
         if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
-          //Insert record
           $query = "INSERT INTO videos(video_title,video_description,name,location,status) VALUES('" . $video_title . "','" . $v_des . "','" . $name . "','" . $target_file . "','" . $status . "')";
           mysqli_query($conn, $query);
-          // echo "<center> upload successfully. </center>";
-          echo "<script>alert('upload successfully'); window.location.href = 'upload.php';</script>";
+          echo "<script>alert('upload successfully');</script>";
         }
       }
 
@@ -81,8 +81,9 @@
       <a class="upload" href="./upload.php">Add Video</a></li><br>
       <a href="./video_edit.php">Manage Video</a><br>
       <a href="edit_comment.php">Manage Comment</a><br>
+      <a href="display_like.php">Likes</a><br>
 
-      <a class="logout" href="http://localhost/project_2/login.php">Logout </a></li>
+      <a class="logout" href="../logout.php">Logout </a></li>
 
     </div>
     <h1 style="margin-left:45%;"> video upload</h1>
@@ -109,8 +110,9 @@
           <td> <input type="text" name="video_title" value="">
         </center><br></td>
       <tr>
-        <td><label for="">video description</label>
-        <td><input type="text" name="video_description"></td>
+        <td ><label for="">video description</label>
+        <!-- <td><input type="text" name="video_description"></td> -->
+        <textarea name="video_description"   placeholder=""></textarea>
         </td>
       </tr>
       <tr>

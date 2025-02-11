@@ -1,6 +1,8 @@
 <?php 
 session_start();
-
+if(isset($_SESSION['uname'])){
+  header('location:login.php');
+}
 include 'config.php';
 
 if(isset($_POST['login'])) {
@@ -43,6 +45,7 @@ if(isset($_POST['login'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title>Login</title>
     <style>
   body {
     font-family: Arial;

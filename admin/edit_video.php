@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("location: ../login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="nav_bar.css">
@@ -14,7 +21,8 @@
             <a class="upload" href="./upload.php">Add Video</a><br>
             <a href="./video_edit.php">Manage Video</a><br>
             <a href="edit_comment.php">Manage Comment</a><br>
-            <a class="logout" href="http://localhost/project_2/login.php">Logout</a><br>
+            <a href="display_like.php">Like</a><br>
+            <a class="logout" href="../logout.php">Logout</a><br>
         </div>
         <?php
         include("../config.php");
@@ -79,23 +87,23 @@ if (isset($_POST['but_upload'])) {
     
     $file = $_FILES['file']['name'];
 
-    // Check if file is uploaded
     if(isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
         $file = $_FILES['file']['name'];
         $location = "../videos/" . $file;
 
         $sql = "UPDATE videos SET video_title='$video_title', video_description='$v_des', name='$file', location='$location', status='$status' WHERE video_id ='$video_id'";
     } else {
-        // File not uploaded, exclude name and location fields from SQL statement
         $sql = "UPDATE videos SET video_title='$video_title', video_description='$v_des',  name='$file', status='$status' WHERE video_id ='$video_id'";
     }
 
     $result = mysqli_query($conn, $sql);
     
     if ($result) {
-        echo "<center>Upload successfully.</center>";
+        echo "<script>alert('upload successfully');</script>";
+       
     } else {
-        echo "<center>Upload failed.</center>";
+        echo "<script>alert('>Upload failed');</script>";
+       
     }
 }
 ?>

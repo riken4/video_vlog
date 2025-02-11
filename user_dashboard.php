@@ -1,10 +1,17 @@
+
+   <?php
+   session_start();
+   if (!isset($_SESSION['username'])) {
+       header("location: ./login.php");
+       exit;
+   }
+      // echo $_SESSION["username"] ;
+      ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>User Dashboad</title>
 </head>
 <style>
   body {
@@ -128,7 +135,7 @@
     font-size: 20px;
   }
 </style>
-</head>
+
 
 <body>
 
@@ -136,9 +143,7 @@
     <div class="wel">
       <h1>Welcome To Video Vlog </h1>
 
-      <h2><?php
-      session_start();
-      echo $_SESSION["username"] ?></h2>
+      <h2></h2>
       <h3>Click here to watch <a href="http://localhost/project_2/admin/readvideoes.php">video</a></h3>
     </div>
     <nav>
@@ -160,10 +165,10 @@
 
           </div>
 
-          <a href="./admin/pass_change.php">change</a>
+          <a href="./admin/pass_change.php">Change Password</a>
           <a href="./admin/manageprofile.php?username=<?php echo $_SESSION["username"]; ?>">profile</a>
         </div>
-        <a class="logout" href="./login.php">Logout</a>
+        <a class="logout" href="./logout.php">Logout</a>
       </div>
     </nav>
 </body>

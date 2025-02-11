@@ -1,6 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("location: ../login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Profile</title>
+    </head>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -120,8 +129,13 @@
             margin-top: 400px;
 
         }
+         img{
+            width: 70px;
+            height: 70px;
+     
+        }
     </style>
-</head>
+
 <body>
 <nav>
             <div class="sidenav">
@@ -130,7 +144,7 @@
                     <div class="user">
                         <?php
                              include ("../config.php");
-                             session_start();
+                            
                         $sql = "SELECT * FROM tbl_user where username = '" . $_SESSION["username"] . "'";
                         $result = mysqli_query($conn, $sql);
                         $row = mysqli_fetch_array($result);
@@ -141,7 +155,7 @@
                     
                     </div>
 
-                    <a href="pass_change.php">change</a>
+                    <a href="pass_change.php">Change Password</a>
         <a href="manageprofile.php?username=<?php echo $_SESSION["username"];?>">profile</a>
                 </div>
                 <a class="logout" href="../logout.php">Logout</a>
@@ -161,7 +175,6 @@
         ?>
         <form method="POST">
             <table>
-            <!-- <img src='../profile_img/" . $row['profile_picture'] "'> -->
                 <tr>
                     <td><label for="fullname">Full Name:</label></td>
                     <td><input type="text" name="fullname" value="<?php echo $row['fullName']; ?>" required></td>
@@ -182,11 +195,12 @@
                     <td><label for="address">Address:</label></td>
                     <td><input type="text" name="address" value="<?php echo $row['Address']; ?>" required></td>
                 </tr>
-                <tr>
+                <tr><div class="pic">
                     <td><label for="profile_picture">Profile Picture:</label></td>
-                    <!-- <img src='../profile_img/" . $row['profile_picture'] . "'> -->
+                    
+                   <center><img src='../profile_img/<?php echo $row['profile_picture'] ?>'></center> 
                     <td><input type="file" name="profile_picture" value="<?php echo $row['profile_picture']; ?>" ></td>
-                </tr>
+                </tr></div>
           
             </table>
             <input type="submit" name="submit" value="Update">
@@ -216,7 +230,8 @@
             }
 
             if ($result) {
-                echo "<center>User updated successfully</center>";
+                echo "<script>alert('User updated successfully');</script>";
+               
                 // header("Location: readvideoes.php");
                 exit();
             } else {

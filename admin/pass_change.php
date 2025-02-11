@@ -3,7 +3,7 @@ include("../config.php");
 session_start();
 if(!isset($_SESSION['username']))
 {
-	header("location:../user_dashboard.php");
+	header("location:../login.php");
 }
 
 $UserName = $_SESSION['username'];
@@ -37,7 +37,7 @@ if(isset($_POST['submit'])) {
         $updatePasswordQuery = "UPDATE tbl_user SET password='$hashedPassword' WHERE username='$UserName'";
         if(mysqli_query($conn, $updatePasswordQuery)) {
       
-            echo "<script>alert('Successfully Changed your Password'); window.location.href = 'pass_change.php';</script>";
+            echo "<script>alert('Successfully Changed your Password'); window.location.href = '../user_dashboard.php';</script>";
             exit();
         } else {
             $info = "Error updating password: " . mysqli_error($conn);
@@ -47,9 +47,10 @@ if(isset($_POST['submit'])) {
 ?>
 <!DOCTYPE html>
 <html>
+    <title>Password Change</title>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Travels Site</title>
+    <title>Change Password</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
          body {
@@ -187,7 +188,7 @@ if(isset($_POST['submit'])) {
                     
                     </div>
 
-                    <a href="pass_change.php">change</a>
+                    <a href="pass_change.php">Change Password</a>
         <a href="manageprofile.php?username=<?php echo $_SESSION["username"];?>">profile</a>
                 </div>
                 <a class="logout" href="../logout.php">Logout</a>
